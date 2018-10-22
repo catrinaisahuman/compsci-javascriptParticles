@@ -12,7 +12,7 @@ function particleSystem(pos, size=30){
   
   this.update = function(){
   	for(i=this.particles.length - 1; i>=0; i--){
-		//this.particles[i].applyForce(b.seek(createVector(mouseX, mouseY), this.particles[i]))
+		this.particles[i].vel = (b.arive(createVector(mouseX, mouseY), this.particles[i]))
     	if(this.particles[i].dead == true){
       	this.particles.splice(i, 1);
         }
@@ -27,7 +27,7 @@ function particleSystem(pos, size=30){
     	}
     }
   
-  setPosition = function(x,y){
+  this.setPosition = function(x,y){
   	this.pos.x = x;
     this.pos.y = y;
   }

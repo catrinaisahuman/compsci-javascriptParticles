@@ -21,4 +21,10 @@ function Behaviors(){
     return steeringForce;
   }
   
+  this.arive = function(target, particle){
+  	targetDist = p5.Vector.sub(target, particle.pos);
+  	targetDist.div(10)
+    return targetDist;
+  }
+  
 }

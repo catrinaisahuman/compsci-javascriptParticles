@@ -13,7 +13,7 @@ function Particle(pos, vel, decay=0.015, size=10, col='red', mass=1, life=1){
  
   this.update = function(){
     this.vel.add(this.accel);
-    this.vel.add(this.gravity);
+    //this.vel.add(this.gravity);
     this.vel.mult(0.9);
   	if(this.vel.mag() > 10){
        this.vel.setMag(10);
@@ -38,7 +38,6 @@ function Particle(pos, vel, decay=0.015, size=10, col='red', mass=1, life=1){
   }
 
   this.applyForce = function(force){
-    
   	this.accel = force.div(this.mass);
   }
   
