@@ -18,6 +18,7 @@ function Particle(pos, vel, decay=0.015, size=10, col='red', mass=1, life=1){
   	if(this.vel.mag() > 10){
        this.vel.setMag(10);
     }
+	  
   	this.pos.add(this.vel);
     this.accel.set(0,0);
       
@@ -39,18 +40,6 @@ function Particle(pos, vel, decay=0.015, size=10, col='red', mass=1, life=1){
 
   this.applyForce = function(force){
   	this.accel = force.div(this.mass);
-  }
-  
-  this.seek = function(seekPos){
-  	targetDir = seekPos.sub(this.pos);
-    steeringForce = targetDir.sub(this.vel).normalize();
-    this.vel.add(steeringForce);
-  }
-  
-  this.wind = function(windPos){
-  	windForce = this.pos.sub(windPos);
-    distSquared = this.pos.dist(windPos)^2;
-    this.vel.add(windForce.mult(min((10/distSquared), 10)));
   }
   
   this.display = function(){

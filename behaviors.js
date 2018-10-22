@@ -14,7 +14,6 @@ function Behaviors(){
     return windForce;
   }
    
-
   this.flee = function(target, particle){
   	targetDir = p5.Vector.sub(particle.pos, target);
     steeringForce = targetDir.sub(particle.vel).normalize();
@@ -26,5 +25,4 @@ function Behaviors(){
   	targetDist.div(10)
     return targetDist;
   }
-  
 }
