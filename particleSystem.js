@@ -1,9 +1,11 @@
-function particleSystem(pos, size=30){
+function particleSystem(pos, size=1){
   this.size = size;
   this.particles = [];
   this.pos = createVector(pos[1], pos[0]);
   this.click = createVector();
-  
+  this.timer = -1;
+  this.target = createVector();
+	
   this.run = function(){
   	for(i=0; i<this.particles.length; i++){
 			this.particles[i].render();
@@ -12,12 +14,17 @@ function particleSystem(pos, size=30){
   
   this.update = function(){
   	for(i=this.particles.length - 1; i>=0; i--){
-		this.particles[i].vel = (b.arive(createVector(mouseX, mouseY), this.particles[i]))
+		//this.particles[i].vel = (b.arive(createVector(mouseX, mouseY), this.particles[i]))
+		
+        this.target = b.wander(this.particles[i]);	
+		this.particles[i].applyForce(b.seek(this.target, this.particles[i]));
     	if(this.particles[i].dead == true){
-      	this.particles.splice(i, 1);
+      		this.particles.splice(i, 1);
         }
       }
-    }
+	  
+	 
+  }
 
   
   this.add = function(posX, posY, velX, velY){

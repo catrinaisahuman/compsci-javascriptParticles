@@ -36,6 +36,9 @@ function Particle(pos, vel, decay=0.015, size=10, col='red', mass=1, life=1){
   	if(this.size < 1){
     	return true;
     }
+	if(this.pos.x < 0 || this.pos.x > 400 || this.pos.y < 0 || this.pos.y > 400){
+		return true;
+	}
   }
 
   this.applyForce = function(force){
