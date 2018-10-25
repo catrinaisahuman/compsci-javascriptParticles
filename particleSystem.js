@@ -1,4 +1,4 @@
-function particleSystem(pos, size=1){
+function particleSystem(pos, size=50){
   this.size = size;
   this.particles = [];
   this.pos = createVector(pos[1], pos[0]);
@@ -15,8 +15,8 @@ function particleSystem(pos, size=1){
   this.update = function(){
   	for(i=this.particles.length - 1; i>=0; i--){
 		//this.particles[i].vel = (b.arive(createVector(mouseX, mouseY), this.particles[i]))
-		
-        this.target = b.wander(this.particles[i]);	
+        
+		this.target = b.wander(this.particles[i]);	
 		this.particles[i].applyForce(b.seek(this.target, this.particles[i]));
     	if(this.particles[i].dead == true){
       		this.particles.splice(i, 1);

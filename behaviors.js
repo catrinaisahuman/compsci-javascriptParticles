@@ -1,12 +1,11 @@
 function Behaviors(){
-		
-	this.wanderX = 1;
-	this.wanderY = 0;
-	this.r = 5;
-	this.jitter = 1;
-	this.scale = 50;
+	
 	this.timer = -1;
 	
+	this.r = 20;
+	this.jitter = 1;
+	this.scale = 50;
+		
   this.seek = function(target, particle){
 	//console.log(target)
   	targetDir = p5.Vector.sub(target, particle.pos);
@@ -35,22 +34,31 @@ function Behaviors(){
   }
   
   this.wander = function(particle){
+	  
 	  if(this.timer == 0){
-	  	this.wanderX += random(-this.jitter, this.jitter);
-	  	this.wanderY += random(-this.jitter, this.jitter);
+	  	particle.wanderX += random(-this.jitter, this.jitter);
+	  	particle.wanderY += random(-this.jitter, this.jitter);
 	  }
 	  
-	  dir = createVector(this.wanderX, this.wanderY);
-	  dir.normalize();
+	  dir = createVector(particle.wanderX, particle.wanderY);
+	  dir.setMag(this.r)
 	  
-	  offset = particle.accel;
+	  offset = particle.vel;
 	  offset.setMag(this.scale);
 	  
 	  center = p5.Vector.add(particle.pos, offset);
 	  
 	  target = p5.Vector.add(center, dir);
 	  
-	  if(this.timer > 10){
+	  /*noFill();
+	  stroke(0,0,0);
+	  ellipse(center.x, center.y, this.r*2);
+	  
+	  fill(100, 0, 0);
+	  noStroke();
+	  ellipse(target.x, target.y, 5);*/
+	  
+	  if(this.timer > 5){
 		  this.timer = -1;
 	  }
 	  this.timer++;
