@@ -1,4 +1,4 @@
-function particleSystem(pos, size=50){
+function particleSystem(pos, size=2){
   this.size = size;
   this.particles = [];
   this.pos = createVector(pos[1], pos[0]);
@@ -16,13 +16,24 @@ function particleSystem(pos, size=50){
   	for(i=this.particles.length - 1; i>=0; i--){
 		//this.particles[i].vel = (b.arive(createVector(mouseX, mouseY), this.particles[i]))
         
-		this.target = b.wander(this.particles[i]);	
-		this.particles[i].applyForce(b.seek(this.target, this.particles[i]));
+		this.particles[1].target = b.persue(this.particles[0], this.particles[1]);
+		this.particles[0].target = b.evade(this.particles[1], this.particles[0]);
+		
+		if(this.particles[1].target != null){
+			this.particles[1].applyForce(b.seek(this.particles[1].target, this.particles[1]));
+		}
+		
+		if(this.particles[0].target != null){
+			this.particles[0].applyForce(b.flee(this.particles[0].target, this.particles[0]));
+		}
+		
     	if(this.particles[i].dead == true){
       		this.particles.splice(i, 1);
         }
+		this.screenLoop(i);
       }
 	  
+	 
 	 
   }
 
@@ -43,7 +54,7 @@ function particleSystem(pos, size=50){
     this.col = [random(0,255), random(0,255), random(0,255)];
     this.decay= random(0.0015, 0.00009);
     for(i=0; i<this.size; i++){
-  		this.add(x, y, random(-13, 13), random(-15,9));
+  		this.add(random(0, 400), random(0, 400), random(-13, 13), random(-15,9));
     }
   }
   
@@ -51,5 +62,24 @@ function particleSystem(pos, size=50){
     for(i=0; i<this.size; i++){    
         this.particles[i].applyForce(b.wind(createVector(mouseX, mouseY), this.particles[i]));
     }
+  }
+  
+  this.screenLoop = function(i){
+	  
+	  if(this.particles[i].pos.x < 0){
+			this.particles[i].pos.x = 400;
+		}
+		
+		if(this.particles[i].pos.x > 400){
+			this.particles[i].pos.x = 0;
+		}
+	  
+	  if(this.particles[i].pos.y < 0){
+			this.particles[i].pos.y = 400;
+		}
+		
+		if(this.particles[i].pos.y > 400){
+			this.particles[i].pos.y = 0;
+		}
   }
 }

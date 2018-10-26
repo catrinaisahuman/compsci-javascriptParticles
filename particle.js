@@ -1,11 +1,11 @@
 function Particle(pos, vel, decay=0.015, size=10, col='red', mass=1, life=1, maxVel=1){
-	this.pos = createVector(pos[0], pos[1]);
+  this.pos = createVector(pos[0], pos[1]);
   this.vel = createVector(vel[0], vel[1]);
   this.size = size;
   this.color = color(col);
   this.color2 = color(245,255,0)
   this.life = life;
-	this.dead = false;
+  this.dead = false;
   this.gravity = createVector(0, 0.5);
   this.decay = decay;
   this.accel = createVector(0,0);
@@ -13,11 +13,13 @@ function Particle(pos, vel, decay=0.015, size=10, col='red', mass=1, life=1, max
   this.maxVel = maxVel;
   this.wanderX = 0;
   this.wanderY = 0;
+  this.target = 0;
  
   this.update = function(){
     this.vel.add(this.accel);
     //this.vel.add(this.gravity);
-    this.vel.mult(0.9);
+    //this.vel.mult(0.9);
+	  
   	if(this.vel.mag() > this.maxVel){
        this.vel.setMag(this.maxVel);
     }
@@ -39,9 +41,9 @@ function Particle(pos, vel, decay=0.015, size=10, col='red', mass=1, life=1, max
   	if(this.size < 1){
     	return true;
     }
-	if(this.pos.x < 0 || this.pos.x > 400 || this.pos.y < 0 || this.pos.y > 400){
+	/*if(this.pos.x < 0 || this.pos.x > 400 || this.pos.y < 0 || this.pos.y > 400){
 		return true;
-	}
+	}*/
   }
 
   this.applyForce = function(force){

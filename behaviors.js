@@ -23,6 +23,7 @@ function Behaviors(){
    
   this.flee = function(target, particle){
   	targetDir = p5.Vector.sub(particle.pos, target);
+	//console.log(target);
     steeringForce = targetDir.sub(particle.vel).normalize();
     return steeringForce;
   }
@@ -64,5 +65,30 @@ function Behaviors(){
 	  this.timer++;
 	  return target;
 	 
+  }
+  
+  this.persue = function(victim, particle){
+	  toVictim = p5.Vector.sub(victim.pos, particle.pos);
+	  dot = p5.Vector.dot(particle.vel, toVictim);
+	  normalDot = p5.Vector.dot(particle.vel.normalize(), victim.vel.normalize())
+	  if(dot > 0 && normalDot < -0.95){
+		 	return null;
+		 }
+	  
+	  time = toVictim.mag()/(particle.maxVel + victim.vel.mag());
+	  
+	  target = p5.Vector.add(victim.pos, (p5.Vector.mult(victim.vel, time)));
+	  return target;
+  }
+  
+  this.evade = function(victim, particle){
+	  toVictim = p5.Vector.sub(victim.pos, particle.pos);
+	  dot = p5.Vector.dot(particle.vel, toVictim);
+	  normalDot = p5.Vector.dot(particle.vel.normalize(), victim.vel.normalize())
+	  
+	  time = toVictim.mag()/(particle.maxVel + victim.vel.mag());
+	  
+	  target = p5.Vector.add(victim.pos, (p5.Vector.mult(victim.vel, time)));
+	  return target;
   }
 }
