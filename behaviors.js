@@ -51,13 +51,12 @@ function Behaviors(){
 	  
 	  target = p5.Vector.add(center, dir);
 	  
-	  /*noFill();
+	  noFill();
 	  stroke(0,0,0);
 	  ellipse(center.x, center.y, this.r*2);
 	  
-	  fill(100, 0, 0);
-	  noStroke();
-	  ellipse(target.x, target.y, 5);*/
+	  fill(255, 0, 0);
+	  ellipse(target.x, target.y, 5);
 	  
 	  if(this.timer > 5){
 		  this.timer = -1;
@@ -78,6 +77,9 @@ function Behaviors(){
 	  time = toVictim.mag()/(particle.maxVel + victim.vel.mag());
 	  
 	  target = p5.Vector.add(victim.pos, (p5.Vector.mult(victim.vel, time)));
+	  
+	  ellipse(target.x, target.y, 5);
+	  
 	  return target;
   }
   

@@ -17,14 +17,14 @@ function particleSystem(pos, size=2){
 		//this.particles[i].vel = (b.arive(createVector(mouseX, mouseY), this.particles[i]))
         
 		this.particles[1].target = b.persue(this.particles[0], this.particles[1]);
-		this.particles[0].target = b.evade(this.particles[1], this.particles[0]);
+		this.particles[0].target = b.wander(this.particles[0]);
 		
 		if(this.particles[1].target != null){
 			this.particles[1].applyForce(b.seek(this.particles[1].target, this.particles[1]));
 		}
 		
 		if(this.particles[0].target != null){
-			this.particles[0].applyForce(b.flee(this.particles[0].target, this.particles[0]));
+			this.particles[0].applyForce(b.seek(this.particles[0].target, this.particles[0]));
 		}
 		
     	if(this.particles[i].dead == true){
