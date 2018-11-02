@@ -13,7 +13,11 @@ function Particle(pos, vel, decay=0.015, size=10, col='red', mass=1, life=1, max
   this.maxVel = maxVel;
   this.wanderX = 0;
   this.wanderY = 0;
-  this.target = 0;
+	
+  this.target = createVector();
+  this.victim;
+  
+  this.behavior = new Behaviors(this);
  
   this.update = function(){
     this.vel.add(this.accel);
@@ -60,5 +64,63 @@ function Particle(pos, vel, decay=0.015, size=10, col='red', mass=1, life=1, max
 	  
     stroke(100, 0, 0)
     line(this.pos.x, this.pos.y, this.pos.x + this.vel.x, this.pos.y + this.vel.y);
+  }
+  
+  this.setTarget = function(target){
+	  this.target =target;
+  }
+  
+  this.setVictim = function(victim){
+	  this.victim = victim;
+  }
+  
+  this.seekOn = function(){
+	  this.behavior.currentBehavior |= 2;
+	  
+	  
+  }
+  
+  this.seekOff = function(){
+	  this.behavior.currentBehavior ^= 2;
+  }
+  
+  this.fleeOn = function(){
+	  this.behavior.currentBehavior |= 4;
+  }
+  
+  this.fleeOff = function(){
+	  this.behavior.currentBehavior ^= 4;
+  }
+  
+  this.arriveOn = function(){
+	  this.behavior.currentBehavior |= 8;
+  }
+  
+  this.arriveOff = function(){
+	  this.behavior.currentBehavior ^= 8;
+  }
+  
+  this.persueOn = function(){
+	  this.behavior.currentBehavior |= 16;
+  }
+  
+  this.persueOff = function(){
+	  this.behavior.currentBehavior ^= 16;
+  }
+  
+  this.evadeOn = function(){
+	  this.behavior.currentBehavior |= 32;
+  }
+  
+  this.evadeOff = function(){
+	  this.behavior.currentBehavior ^= 32;
+  }
+  
+  this.wanderOn = function(){
+	  this.behavior.currentBehavior |= 64;
+  }
+  
+  this.wanderOff = function(){
+	  this.behavior.currentBehavior ^= 64;
   }
 }

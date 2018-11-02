@@ -1,10 +1,10 @@
-function particleSystem(pos, size=2){
+function particleSystem(pos, size=1){
   this.size = size;
   this.particles = [];
   this.pos = createVector(pos[1], pos[0]);
   this.click = createVector();
   this.timer = -1;
-  this.target = createVector();
+  this.target = createVector(0,0);
 	
   this.run = function(){
   	for(i=0; i<this.particles.length; i++){
@@ -13,19 +13,11 @@ function particleSystem(pos, size=2){
   }
   
   this.update = function(){
-  	for(i=this.particles.length - 1; i>=0; i--){
-		//this.particles[i].vel = (b.arive(createVector(mouseX, mouseY), this.particles[i]))
-        
-		this.particles[1].target = b.persue(this.particles[0], this.particles[1]);
-		this.particles[0].target = b.wander(this.particles[0]);
+  	for(i=this.particles.length - 1; i>=0; i--){   
 		
-		if(this.particles[1].target != null){
-			this.particles[1].applyForce(b.seek(this.particles[1].target, this.particles[1]));
-		}
+		this.particles[i].applyForce(this.particles[i].behavior.calculate()); 
+		this.particles[i].setTarget(this.target);
 		
-		if(this.particles[0].target != null){
-			this.particles[0].applyForce(b.seek(this.particles[0].target, this.particles[0]));
-		}
 		
     	if(this.particles[i].dead == true){
       		this.particles.splice(i, 1);
@@ -55,15 +47,11 @@ function particleSystem(pos, size=2){
     this.decay= random(0.0015, 0.00009);
     for(i=0; i<this.size; i++){
   		this.add(random(0, 400), random(0, 400), random(-13, 13), random(-15,9));
+		this.particles[i].wanderOn();
+		this.particles[i].fleeOn();
     }
   }
-  
-  this.wind = function(){
-    for(i=0; i<this.size; i++){    
-        this.particles[i].applyForce(b.wind(createVector(mouseX, mouseY), this.particles[i]));
-    }
-  }
-  
+    
   this.screenLoop = function(i){
 	  
 	  if(this.particles[i].pos.x < 0){

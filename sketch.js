@@ -4,7 +4,6 @@ var sys;
 function setup() {
   createCanvas(400, 400);
   sys = new particleSystem([0,0]);
-  b = new Behaviors();
   colorMode(RGB);    
 }
 
@@ -16,5 +15,5 @@ function draw() {
 }
 
 function mousePressed() {
-    sys.wind();
+   
 }
