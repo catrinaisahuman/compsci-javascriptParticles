@@ -6,8 +6,10 @@ function Behaviors(owner){
 	this.r = 20;
 	this.jitter = 1;
 	this.scale = 50;
+	this.sepFactor = 20;
+	this.alignFactor = 15;
 	
-  var NONE=0, SEEK=2, FLEE=4, ARIVE= 8, PERSUE=16, EVADE=32, WANDER=64;
+  var NONE=0, SEEK=2, FLEE=4, ARIVE= 8, PERSUE=16, EVADE=32, WANDER=64, SEPARATE=128, ALIGN=256, COHESION=512;
 		
   this.seek = function(target){
 	//console.log(target)
@@ -17,7 +19,7 @@ function Behaviors(owner){
   }
   
   this.wind = function(target){
- 		windForce = p5.Vector.sub(this.owner.pos, target);
+ 	windForce = p5.Vector.sub(this.owner.pos, target);
     distSquared = (this.owner.pos.dist(target))^2;
     windMult = min(10/distSquared, 10);
     windForce.mult(windMult);
@@ -54,12 +56,12 @@ function Behaviors(owner){
 	  
 	  target = p5.Vector.add(center, dir);
 	  
-	  noFill();
+	  /*noFill();
 	  stroke(0,0,0);
 	  ellipse(center.x, center.y, this.r*2);
 	  
 	  fill(255, 0, 0);
-	  ellipse(target.x, target.y, 5);
+	  ellipse(target.x, target.y, 5)*/
 	  
 	  if(this.timer > 5){
 		  this.timer = -1;
@@ -97,6 +99,78 @@ function Behaviors(owner){
 	  return this.flee(target);
   }
   
+  this.separate = function(){
+	  totalDist = createVector();
+	  for(let i=0; i<world.particles.length; i++){
+		  
+		  if(world.particles[i].tag == true){
+			  dist = p5.Vector.sub(owner.pos, world.particles[i].pos);
+			  totalDist.add(dist);
+			  
+		  }
+		  
+		  
+	  }
+	  distMag = totalDist.magSq();
+	  
+	  if(distMag != 0){
+		 return p5.Vector.div(totalDist.mult(this.sepFactor), distMag); 
+	  }
+	  
+  }
+  
+  this.align = function(){
+	  totalHeadings = createVector();
+	  vectors = 0
+	  for(let i=0; i<world.particles.length; i++){
+		  
+		  if(world.particles[i].tag == true){
+			  particleHeading = world.particles[i].vel.copy();
+			  totalHeadings = p5.Vector.add(particleHeading.normalize(), totalHeadings);
+			  vectors++;
+		  }	
+	  }
+	  if(vectors != 0){
+		 totalHeadings.div(vectors); 
+	  }
+	  
+	  ownerHeading = this.owner.vel.copy();
+	  steeringForce = p5.Vector.sub(totalHeadings, ownerHeading.normalize())
+	  
+	  
+	  return steeringForce.mult(this.alignFactor);
+	  
+	  
+	 
+  }
+  
+  this.cohesion = function(){
+	  totalPos = createVector();
+	  vectors = 0
+	  for(let i=0; i<world.particles.length; i++){
+		  
+		  if(world.particles[i].tag == true){
+			  particlePos = world.particles[i].pos.copy();
+			  totalPos = p5.Vector.add(particlePos, totalPos);
+			  vectors++;
+		  }	
+	  }
+	  if(vectors != 0){
+		 totalPos.div(vectors); 
+	  }
+	  
+	  
+	  
+	  if((totalPos.x && totalPos.y) !=0){
+		//console.log(totalPos)
+	  	return this.seek(totalPos);
+	  }
+  }
+  
+  
+  
+  
+  
   this.calculate = function(){
 	totalForce = createVector();
 	  
@@ -118,9 +192,18 @@ function Behaviors(owner){
 	if((this.currentBehavior & WANDER) > 0){
 	  totalForce.add(this.wander());
   	} 
-	
+	if((this.currentBehavior & SEPARATE) > 0){
+	  totalForce.add(this.separate());
+  	} 
+	if((this.currentBehavior & ALIGN) > 0){
+	  totalForce.add(this.align());
+  	}   
+	if((this.currentBehavior & COHESION) > 0){
+	  totalForce.add(this.cohesion());
+  	}   
 	  
 	return totalForce;
   }
 
 }
+

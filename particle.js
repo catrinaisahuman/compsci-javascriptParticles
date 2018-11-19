@@ -18,8 +18,11 @@ function Particle(pos, vel, decay=0.015, size=10, col='red', mass=1, life=1, max
   this.victim;
   
   this.behavior = new Behaviors(this);
+	
+  this.tag = true;
  
   this.update = function(){
+	
     this.vel.add(this.accel);
     //this.vel.add(this.gravity);
     //this.vel.mult(0.9);
@@ -32,7 +35,7 @@ function Particle(pos, vel, decay=0.015, size=10, col='red', mass=1, life=1, max
     this.accel.set(0,0);
       
     this.dead = this.isDead();
-    this.size = lerp(0, this.size, this.life);
+    //this.size = lerp(0, this.size, this.life);
     //this.life -= this.decay;
   }
   
@@ -45,18 +48,22 @@ function Particle(pos, vel, decay=0.015, size=10, col='red', mass=1, life=1, max
   	if(this.size < 1){
     	return true;
     }
-	/*if(this.pos.x < 0 || this.pos.x > 400 || this.pos.y < 0 || this.pos.y > 400){
-		return true;
-	}*/
+//	if(this.pos.x < 0 || this.pos.x > 400 || this.pos.y < 0 || this.pos.y > 400){
+//		return true;
+//	}
   }
 
   this.applyForce = function(force){
   	this.accel = force.div(this.mass);
+	
   }
   
   this.display = function(){
     noStroke();
     fill(this.color);
+	/*if(this.tag == true){
+		fill(0,0,0);
+	}*/
   	ellipse(this.pos.x, this.pos.y, this.size);
 	  
     stroke(0, 0, 0);
@@ -122,5 +129,37 @@ function Particle(pos, vel, decay=0.015, size=10, col='red', mass=1, life=1, max
   
   this.wanderOff = function(){
 	  this.behavior.currentBehavior ^= 64;
+  }
+  
+  this.separateOn = function(){
+	  this.behavior.currentBehavior |= 128;
+  }
+  
+  this.separateOff = function(){
+	  this.behavior.currentBehavior ^= 128;
+  }
+  
+  this.alignOn = function(){
+	  this.behavior.currentBehavior |= 256;
+  }
+  
+  this.alignOff = function(){
+	  this.behavior.currentBehavior ^= 256;
+  }
+  
+  this.cohesionOn = function(){
+	  this.behavior.currentBehavior |= 512;
+  }
+  
+  this.cohesionOff = function(){
+	  this.behavior.currentBehavior ^= 512;
+  }
+  
+  this.tagOn = function(){
+	  this.tag = true;
+  }
+  
+  this.tagOff = function(){
+	  this.tag = false;
   }
 }

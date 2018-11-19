@@ -1,0 +1,4 @@
+function World(){
+	this.particles
+	
+}
