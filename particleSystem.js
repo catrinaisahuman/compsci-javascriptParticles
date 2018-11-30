@@ -49,10 +49,11 @@ function particleSystem(pos, size=0){
       		this.particles.splice(i, 1);
         }
 		this.screenLoop(i);
-		this.wanderToggle();
+		//this.wanderToggle();
 		this.particles[i].behavior.sepFactor = myModel.separation;
 		this.particles[i].behavior.alignFactor = myModel.align;
 		this.particles[i].maxVel = myModel.maxVel;
+		this.particles[i].flowFieldOn();
 		
       }
 	  this.size = myModel.particleCount;
@@ -79,7 +80,7 @@ function particleSystem(pos, size=0){
     this.col = [random(0,255), random(0,255), random(0,255)];
     this.decay= random(0.0015, 0.00009);
     for(i=0; i<this.size; i++){
-  		this.add(random(1, 399), random(1, 399), 0,0)//random(-13, 13), random(-13,13));
+  		this.add(random(1, 399), random(1, 399), random(-13, 13), random(-13,13));
     }
   }
     
@@ -122,9 +123,9 @@ function particleSystem(pos, size=0){
   }
   
   this.runWhenFull = function(i){
-	this.particles[i].alignOn();
-	this.particles[i].separateOn();
-  	this.particles[i].cohesionOn();
+//	this.particles[i].alignOn();
+//	this.particles[i].separateOn();
+//  this.particles[i].cohesionOn();
 	
   	}
   

@@ -9,7 +9,7 @@ function Behaviors(owner){
 	this.sepFactor = 20;
 	this.alignFactor = 15;
 	
-  var NONE=0, SEEK=2, FLEE=4, ARIVE= 8, PERSUE=16, EVADE=32, WANDER=64, SEPARATE=128, ALIGN=256, COHESION=512;
+  var NONE=0, SEEK=2, FLEE=4, ARIVE= 8, PERSUE=16, EVADE=32, WANDER=64, SEPARATE=128, ALIGN=256, COHESION=512, FLOWFIELD=1024;
 		
   this.seek = function(target){
 	//console.log(target)
@@ -167,6 +167,19 @@ function Behaviors(owner){
 	  }
   }
   
+  this.flowField = function(){
+	  closestPoint = flow.points[0].pos.copy()
+	  var closestVector
+	  for(i=0;i<flow.points.length;i++){
+		  if(p5.Vector.dist(this.owner.pos, flow.points[i].pos) < p5.Vector.dist(this.owner.pos, closestPoint)){
+			  closestPoint = flow.points[i].pos.copy();
+			  closestVector = flow.points[i].vector.copy();
+		  }
+	  }
+	  
+	  return closestVector;
+  }
+  
   
   
   
@@ -201,6 +214,9 @@ function Behaviors(owner){
 	if((this.currentBehavior & COHESION) > 0){
 	  totalForce.add(this.cohesion());
   	}   
+	if((this.currentBehavior & FLOWFIELD) > 0){
+	  totalForce.add(this.flowField());
+  	}  
 	  
 	return totalForce;
   }

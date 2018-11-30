@@ -44,6 +44,7 @@ function Particle(pos, vel, decay=0.015, size=10, col='red', mass=1, life=1, max
     this.display();
   }
   
+  
   this.isDead = function(){
   	if(this.size < 1){
     	return true;
@@ -52,6 +53,7 @@ function Particle(pos, vel, decay=0.015, size=10, col='red', mass=1, life=1, max
 //		return true;
 //	}
   }
+  
 
   this.applyForce = function(force){
   	this.accel = force.div(this.mass);
@@ -73,6 +75,7 @@ function Particle(pos, vel, decay=0.015, size=10, col='red', mass=1, life=1, max
     line(this.pos.x, this.pos.y, this.pos.x + this.vel.x, this.pos.y + this.vel.y);
   }
   
+  
   this.setTarget = function(target){
 	  this.target =target;
   }
@@ -80,6 +83,7 @@ function Particle(pos, vel, decay=0.015, size=10, col='red', mass=1, life=1, max
   this.setVictim = function(victim){
 	  this.victim = victim;
   }
+  
   
   this.seekOn = function(){
 	  this.behavior.currentBehavior |= 2;
@@ -154,6 +158,16 @@ function Particle(pos, vel, decay=0.015, size=10, col='red', mass=1, life=1, max
   this.cohesionOff = function(){
 	  this.behavior.currentBehavior ^= 512;
   }
+  
+  this.flowFieldOn = function(){
+	  this.behavior.currentBehavior |= 1024;
+  }
+  
+  this.flowFieldOff = function(){
+	  this.behavior.currentBehavior ^= 1024;
+  }
+  
+  
   
   this.tagOn = function(){
 	  this.tag = true;
